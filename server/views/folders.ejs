@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>File Viewer</title>
+        <script src="/js/folderpage.js"></script>
+    </head>
+    <body>
+        <div><%= username %></div>
+        <div><%= folderName %></div>
+        <div>
+            <h1>Folders Viewer</h1>
+            <ul>
+                <% childfolders.forEach(function(folder) { %>
+                    <li><%= folder %></li>
+                <% }); %>
+            </ul>
+        </div>
+        <div >
+            <% files.forEach(function(file) { %>
+                <li><%= file.name %></li>
+            <% }); %>
+        </div>
+    </body>
+</html>
