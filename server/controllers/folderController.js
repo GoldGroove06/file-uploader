@@ -1,6 +1,8 @@
 const { name } = require("ejs");
 
 async function getFolder(req, res) {
+    const id = req.params.id;
+    console.log(id)
     res.render("folders", {
         username:"arsh",
         folderName: "folder1",

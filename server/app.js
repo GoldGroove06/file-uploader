@@ -17,7 +17,7 @@ app.get("/", (req, res) => {
     res.send("arsh")
 })
 
-app.get("/folder", getFolder)
+app.get("/folder/:id", getFolder)
 
 app.get("/api/fetchfiles/", getFiles)
 
