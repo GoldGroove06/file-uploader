@@ -23,5 +23,11 @@
     "passport-local": "^1.0.0",
     "pg": "^8.15.2",
     "prisma": "^6.6.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.25.1",
+    "eslint": "^9.25.1",
+    "eslint-plugin-react": "^7.37.5",
+    "globals": "^16.0.0"
   }
 }

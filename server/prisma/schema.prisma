@@ -3,6 +3,18 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Session {
+  id        String   @id
+  sid       String   @unique
+  data     String
+  expiresAt   DateTime
+}
+
 model User {
     id Int @id @default(autoincrement())
     name String
@@ -35,3 +47,5 @@ model File {
   folderId  Int
   folder    Folder   @relation(fields: [folderId], references: [id])
 }
+
+

@@ -1,7 +1,7 @@
 const {Router} = require("express")
 const authRoute = Router()
 const passport = require("passport");
-const {getSignin, postSignin} = require("../controllers/signinController")
+const {getSignin} = require("../controllers/signinController")
 const {getSignup, postSignup} = require("../controllers/signupController")
 const { emailCheck } = require("../validators/createUserValidator")
 

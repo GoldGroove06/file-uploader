@@ -1,6 +1,6 @@
 const { validationResult } = require("express-validator");
 const bcryptjs = require("bcryptjs")
-import { PrismaClient } from '@prisma/client';
+const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
    
@@ -28,7 +28,7 @@ async function postSignup(req, res) {
               if (name && email && password) {
                 const salt = await bcryptjs.genSalt(10)
                 const hashedPassword = await bcryptjs.hash(password, salt)
-                await prisma.User.create({
+                await prisma.user.create({
                     data: {
                         name: name,
                         email: email,
