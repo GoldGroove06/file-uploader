@@ -16,36 +16,45 @@ model Session {
 }
 
 model User {
-    id Int @id @default(autoincrement())
-    name String
-    email String @unique
-    password String
+  id       Int      @id @default(autoincrement())
+  name     String
+  email    String   @unique
+  password String
+
+  folders  Folder[] @relation("UserFoldersByEmail")
+  files    File[]   @relation("UserFilesByEmail")
 }
 
 model Folder {
-  id             Int      @id @default(autoincrement())
-  name           String
-  createdAt      DateTime @default(now())
+  id        Int       @id @default(autoincrement())
+  name      String
+  createdAt DateTime  @default(now())
 
-  // Self-relation: parent folder
-  parentId       Int?     
-  parent         Folder?  @relation("FolderHierarchy", fields: [parentId], references: [id])
+  // Relate by user email
+  userEmail String
+  user      User      @relation("UserFoldersByEmail", fields: [userEmail], references: [email])
 
-  // Self-relation: child folders
-  children       Folder[] @relation("FolderHierarchy")
+  // Self-relation: parent/child folders
+  parentId  Int?
+  parent    Folder?   @relation("FolderHierarchy", fields: [parentId], references: [id])
+  children  Folder[]  @relation("FolderHierarchy")
 
-  // Relation to files
-  files          File[]
+  files     File[]
 }
 
 model File {
   id        Int      @id @default(autoincrement())
   name      String
   date      DateTime @default(now())
-  size      Int    
+  size      Int
 
+  // Relate by folder
   folderId  Int
   folder    Folder   @relation(fields: [folderId], references: [id])
+
+  // Relate by user email
+  userEmail String
+  user      User     @relation("UserFilesByEmail", fields: [userEmail], references: [email])
 }
 
 

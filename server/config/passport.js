@@ -29,7 +29,7 @@ passport.use(
 
   passport.serializeUser((user, done) => {
     done(null, user.email);
-  });
+  }); 
   
 
   passport.deserializeUser(async (email, done) => {

@@ -8,9 +8,8 @@ const { PrismaSessionStore } = require('@quixo3/prisma-session-store');
 const { PrismaClient } = require('@prisma/client');
 const authRoute = require("./routes/authRoute")
 
-const {getFolder, getFiles } = require("./controllers/folderController")
-
 const path = require("node:path");
+const folderRoute = require('./routes/folderRoute');
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
@@ -58,9 +57,7 @@ app.get("/log-out", (req, res, next) => {
   });
 });
 
-app.get("/folder/:id", checkAuthenticated, getFolder)
-
-app.get("/api/fetchfiles/", getFiles)
+app.use("/folder", checkAuthenticated, folderRoute)
 
 app.listen(3000, () => {
     console.log("Server is running on port 3000");
