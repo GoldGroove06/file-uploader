@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Folder Creator</title>
+        <script src="/js/folderpage.js"></script>
+    </head>
+    <body>
+        <form id="folderForm" action="/folder/api/create" method="POST">
+            <label for="folderName">Folder Name:</label>
+            <input type="text" id="foldername" name="foldername" required />
+            <input type="hidden" id="parentid" name="parentid" value="1" />
+            <button type="submit">Create Folder</button>
+        </form>
+        <form id="deleteform" action="/folder/api/delete" method="POST">
+            <label for="folderName">Folder Name:</label>
+           
+            <input type="hidden" id="folderId" name="folderId" value="2" />
+            <button type="submit">Delete Folder</button>
+        </form>
+
+        <form id="renameform" action="/folder/api/rename" method="POST">
+            <label for="folderName">Folder Name:</label>
+            <input type="text" id="newName" name="newName" required />
+            <input type="hidden" id="folderId" name="folderId" value="3" />
+            <button type="submit">Rename Folder</button>
+        </body>
+
+</html>

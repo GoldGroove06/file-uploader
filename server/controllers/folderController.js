@@ -8,12 +8,17 @@ async function getFolder(req, res) {
     const user = req.session.passport.user;
     console.log(req.session.passport.user)
     let data;
-    if (id == parseInt(id)) {
+    if (parseInt(id) == 0) {
          data = await prisma.folder.findFirst({
             where: {
                 userEmail:user,
                 parentId: null
-            }
+            },
+            
+        include: {
+            files: true,
+            children: true
+        }
         })
     }
     else{
@@ -22,19 +27,20 @@ async function getFolder(req, res) {
         where: {
             userEmail:user,
             id: parseInt(id)
-        }
+        },
+        
+  include: {
+    files: true,
+    children: true
+  }
     })
 }
     console.log(data)
     res.render("folders", {
-        username:"arsh",
-        folderName: "folder1",
+        username:req.session.passport.user,
+        folderName: data.name,
         parentFolder: "root",
-        childfolders: [
-        "folder2",
-        "folder3",
-        "folder4"
-        ],
+        childfolders: data.children,
         files: [
             {
                 name: "file1.pdf",
@@ -55,6 +61,7 @@ async function getFolder(req, res) {
 
 async function createFolder(req, res) {
     const { foldername,parentid } = req.body;
+    console.log(foldername,parentid)
     if (!foldername || !parentid) {
         return res.status(400).json({ error: "Folder name and parent id are required" });
     }
@@ -66,7 +73,7 @@ async function createFolder(req, res) {
             data: {
                 name: foldername,
                 userEmail: user,
-                parentId: parentid == "root" ? parseInt(parentid) : null
+                parentId: parentid == "root" ? null : parseInt(parentid)
             }
         })
     }
@@ -77,6 +84,47 @@ async function createFolder(req, res) {
     
 
     res.status(200).json({ message: "Folder created successfully", folder: data });
+}
+
+async function deleteFolder(req, res) {
+    const { folderId } = req.body;
+    if (!folderId) {
+        return res.status(400).json({ error: "Folder ID is required" });
+    }
+    try {
+        await prisma.folder.delete({
+            where: {
+                id: parseInt(folderId)
+            }
+        });
+        res.status(200).json({ message: "Folder deleted successfully" });
+    } catch (error) {
+        console.error("Error deleting folder:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+}
+
+async function renameFolder(req, res) {
+    const { folderId, newName } = req.body;
+    if (!folderId || !newName) {
+        return res.status(400).json({ error: "Folder ID and new name are required" });
+    }
+    try {
+        await prisma.folder.update({
+            where: {
+                id: parseInt(folderId)
+            },
+            data: {
+                name: newName
+            }
+        });
+        res.status(200).json({ message: "Folder renamed successfully" });
+    } catch (error) {
+        console.error("Error renaming folder:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+
+
 }
 
 async function getFiles(req, res) {
@@ -99,8 +147,15 @@ async function getFiles(req, res) {
     res.end(jsonContent);
 }
 
+async function folderCreate(req, res) {
+    res.render("newform")
+}
+
 module.exports = {
     getFolder,
     getFiles,
-    createFolder
+    createFolder,
+    folderCreate,
+    deleteFolder,
+    renameFolder
 }
