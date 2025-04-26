@@ -19,7 +19,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
   session({
     cookie: {
-     maxAge: 7 * 24 * 60 * 60 * 1000 // ms
+      maxAge: 7 * 24 * 60 * 60 * 1000 // ms
     },
     secret: 'a santa at nasa',
     resave: true,
@@ -34,18 +34,18 @@ app.use(
     )
   })
 );
-  app.use(passport.initialize());
-  app.use(passport.session());
-  
-const  checkAuthenticated = (req, res, next) => {
-    if (req.isAuthenticated()) { return next() }
-    res.redirect("/auth/signin")
-  }
+app.use(passport.initialize());
+app.use(passport.session());
+
+const checkAuthenticated = (req, res, next) => {
+  if (req.isAuthenticated()) { return next() }
+  res.redirect("/auth/signin")
+}
 
 app.use("/auth", authRoute)
 
 app.get("/", (req, res) => {
-    res.send("arsh")
+  res.send("arsh")
 })
 
 app.get("/log-out", (req, res, next) => {
@@ -60,5 +60,5 @@ app.get("/log-out", (req, res, next) => {
 app.use("/folder", checkAuthenticated, folderRoute)
 
 app.listen(3000, () => {
-    console.log("Server is running on port 3000");
+  console.log("Server is running on port 3000");
 })

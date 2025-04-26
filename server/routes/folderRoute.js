@@ -1,7 +1,7 @@
-const {Router} = require("express")
+const { Router } = require("express")
 const folderRoute = Router()
 
-const {getFolder, getFiles, createFolder, folderCreate, deleteFolder, renameFolder } = require("../controllers/folderController")
+const { getFolder, getFiles, createFolder, folderCreate, deleteFolder, renameFolder } = require("../controllers/folderController")
 
 folderRoute.get("/folder/:id", getFolder)
 folderRoute.get("/fetchfiles/", getFiles)

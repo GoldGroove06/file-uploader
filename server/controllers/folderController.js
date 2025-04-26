@@ -4,40 +4,50 @@ const prisma = new PrismaClient();
 
 async function getFolder(req, res) {
     const id = req.params.id;
-    
+
     const user = req.session.passport.user;
     console.log(req.session.passport.user)
     let data;
-    if (parseInt(id) == 0) {
-         data = await prisma.folder.findFirst({
-            where: {
-                userEmail:user,
-                parentId: null
-            },
-            
-        include: {
-            files: true,
-            children: true
-        }
-        })
-    }
-    else{
+    try {
+        if (parseInt(id) == 0) {
+            data = await prisma.folder.findFirst({
+                where: {
+                    userEmail: user,
+                    parentId: null
+                },
 
-     data = await prisma.folder.findUnique({
-        where: {
-            userEmail:user,
-            id: parseInt(id)
-        },
-        
-  include: {
-    files: true,
-    children: true
-  }
-    })
-}
-    console.log(data)
+                include: {
+                    files: true,
+                    children: true
+                }
+            })
+        }
+        else {
+
+            data = await prisma.folder.findUnique({
+                where: {
+                    userEmail: user,
+                    id: parseInt(id)
+                },
+
+                include: {
+                    files: true,
+                    children: true
+                }
+            })
+        }
+        console.log(data)
+    }
+    catch (error) {
+        console.error("Error fetching folder:", error);
+        return res.status(500).json({ error: "Internal server error" });
+    }
+    if (!data) {
+        return res.status(404).json({ error: "Folder not found" });
+    }
+
     res.render("folders", {
-        username:req.session.passport.user,
+        username: req.session.passport.user,
         folderName: data.name,
         parentFolder: "root",
         childfolders: data.children,
@@ -57,17 +67,18 @@ async function getFolder(req, res) {
         ]
 
     })
+
 }
 
 async function createFolder(req, res) {
-    const { foldername,parentid } = req.body;
-    console.log(foldername,parentid)
+    const { foldername, parentid } = req.body;
+    console.log(foldername, parentid)
     if (!foldername || !parentid) {
         return res.status(400).json({ error: "Folder name and parent id are required" });
     }
     const user = req.session.passport.user;
     let data
-    try{
+    try {
 
         data = await prisma.folder.create({
             data: {
@@ -81,7 +92,7 @@ async function createFolder(req, res) {
         console.error("Error creating folder:", error);
         return res.status(500).json({ error: "Internal server error" });
     }
-    
+
 
     res.status(200).json({ message: "Folder created successfully", folder: data });
 }
@@ -128,7 +139,7 @@ async function renameFolder(req, res) {
 }
 
 async function getFiles(req, res) {
-  
+
     const responseData = [
         {
             name: "file1.pdf",
