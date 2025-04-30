@@ -10,6 +10,7 @@ const authRoute = require("./routes/authRoute")
 
 const path = require("node:path");
 const folderRoute = require('./routes/folderRoute');
+const fileRoute = require('./routes/fileRoute');
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
@@ -58,6 +59,7 @@ app.get("/log-out", (req, res, next) => {
 });
 
 app.use("/folder", checkAuthenticated, folderRoute)
+app.use("/file", checkAuthenticated, fileRoute)
 
 app.listen(3000, () => {
   console.log("Server is running on port 3000");

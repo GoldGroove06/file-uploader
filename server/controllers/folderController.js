@@ -138,25 +138,7 @@ async function renameFolder(req, res) {
 
 }
 
-async function getFiles(req, res) {
 
-    const responseData = [
-        {
-            name: "file1.pdf",
-            size: "2MB",
-        },
-        {
-            name: "file2.pdf",
-            size: "2MB",
-        },
-        {
-            name: "file3.pdf",
-            size: "2MB",
-        }
-    ]
-    const jsonContent = JSON.stringify(responseData);
-    res.end(jsonContent);
-}
 
 async function folderCreate(req, res) {
     res.render("newform")
@@ -164,7 +146,6 @@ async function folderCreate(req, res) {
 
 module.exports = {
     getFolder,
-    getFiles,
     createFolder,
     folderCreate,
     deleteFolder,
