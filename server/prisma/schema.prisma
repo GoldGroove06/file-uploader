@@ -45,6 +45,7 @@ model Folder {
 model File {
   id        Int      @id @default(autoincrement())
   name      String
+  savename  String
   date      DateTime @default(now())
   size      Int
 

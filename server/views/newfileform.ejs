@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>File Creator</title>
+        
+    </head>
+    <body style="background-color: black; color: white; height: 100vh;">
+        <form id="fileuploadForm" action="/file/api/upload" method="POST" enctype="multipart/form-data">
+            <label for="fileName">file Name:</label>
+            <input type="file" id="filename" name="filename" required />
+            <input type="hidden" id="parentid" name="parentid" value="1" />
+            <button type="submit">Upload file</button>
+        </form>
+        <form id="deleteform" action="/file/api/delete" method="POST">
+            <label for="fileName">file Name:</label>
+           
+            <input type="hidden" id="fileId" name="fileId" value="3" />
+            <button type="submit">Delete file</button>
+        </form>
+
+        <form id="renameform" action="/file/api/rename" method="POST">
+            <label for="fileName">file Name:</label>
+            <input type="text" id="newname" name="newname" required />
+            <input type="hidden" id="fileId" name="fileId" value="4" />
+            <button type="submit">Rename file</button>
+        </body>
+
+</html>

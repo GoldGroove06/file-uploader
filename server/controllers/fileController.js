@@ -1,9 +1,36 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
-const multer  = require('multer')
-const upload = multer({ dest: 'uploads/' })
+
+
+
+async function getForm ( req, res ) {
+    res.render("newfileform")
+}
 
 async function uploadFile(req, res) {
+    const { parentid } = req.body;
+    console.log(parentid)
+    if (!req.file) {
+        return res.status(400).json({ error: "File is required" });
+    }
+    console.log(req.file)
+    try {
+        const file = await prisma.file.create({
+            data: {
+                name: req.file.originalname,
+                savename: req.file.filename,
+                size: req.file.size,
+                userEmail: req.session.passport.user,
+                folderId: parseInt(parentid)
+            }
+        })
+         
+    }
+    catch (error) {
+        console.error("Error uploading file:", error);
+        return res.status(500).json({ error: "Internal server error" });
+    }
+    return res.status(200).json({ message: "File uploaded successfully" });
     
 }
 async function getFiles(req, res) {
@@ -47,10 +74,52 @@ async function getFiles(req, res) {
             size: "2MB",
         }
     ]
-    const jsonContent = JSON.stringify(responseData);
+    const jsonContent = JSON.stringify(data);
     res.end(jsonContent);
 }
 
+async function renameFile(req, res) {
+    const {newname, fileId} = req.body
+    try{
+        await prisma.file.update({
+            where: {
+                id: parseInt(fileId)
+            },
+            data: {
+                name: newname
+            }
+        })
+        res.status(200).json({message: "File renamed successfully"})
+    }
+    catch(error) {
+        console.error("Error renaming file:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+}
+
+async function deleteFile(req, res) {
+    const { fileId } = req.body;
+    if (!fileId) {
+        return res.status(400).json({ error: "File ID is required" });
+    }
+    try {
+        await prisma.file.delete({
+            where: {
+                id: parseInt(fileId)
+            }
+        });
+        res.status(200).json({ message: "File deleted successfully" });
+    } catch (error) {
+        console.error("Error deleting file:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+}
+
 module.exports = {
-    getFiles
+    getFiles,
+    getForm,
+    uploadFile,
+    renameFile,
+    deleteFile
+
 }
