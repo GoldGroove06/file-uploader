@@ -46,7 +46,7 @@ const checkAuthenticated = (req, res, next) => {
 app.use("/auth", authRoute)
 
 app.get("/", (req, res) => {
-  res.send("arsh")
+  res.render("homepage")
 })
 
 app.get("/log-out", (req, res, next) => {

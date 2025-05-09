@@ -35,6 +35,14 @@ async function postSignup(req, res) {
           password: hashedPassword
         }
       })
+
+      await prisma.folder.create({
+        data: {
+          name: "root",
+          userEmail: email,
+          parentId: null
+        }
+      })
       res.status(200).send("signup successful")
     }
 

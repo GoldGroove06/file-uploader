@@ -45,26 +45,15 @@ async function getFolder(req, res) {
     if (!data) {
         return res.status(404).json({ error: "Folder not found" });
     }
+    console.log(data)
 
     res.render("folders", {
         username: req.session.passport.user,
         folderName: data.name,
-        parentFolder: "root",
+        parentFolder: data.parentId == null ? "root" : data.parentId,
         childfolders: data.children,
-        files: [
-            {
-                name: "file1.pdf",
-                size: "2MB",
-            },
-            {
-                name: "file2.pdf",
-                size: "2MB",
-            },
-            {
-                name: "file3.pdf",
-                size: "2MB",
-            }
-        ]
+        files: data.files,
+        folderid: data.id
 
     })
 
