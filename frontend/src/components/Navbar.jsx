@@ -4,11 +4,11 @@ import Button from '@radui/ui/Button';
 function Navbar({isDarkMode, setDarkMode}) {
     return (
         <div className='top-0 sticky flex flex-row justify-between '>
-            <div>Uploader</div>
+            <div><a href="/"> File Uploader</a></div>
             <div>
             <Button onClick={() => setDarkMode(!isDarkMode)}>Theme</Button>
-            <Button>Sign Up</Button>
-            <Button>Log In</Button>
+            <a href="/signup"><Button>Sign Up</Button></a>
+            <a href="/signin"><Button>Log In</Button></a>
             </div>
         </div>
     );
