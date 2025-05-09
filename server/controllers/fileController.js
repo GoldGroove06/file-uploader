@@ -78,12 +78,31 @@ async function getFiles(req, res) {
     res.end(jsonContent);
 }
 
+async function downloadFile(req,res) {
+    const id = req.params.id;
+    try {
+        const file = await prisma.file.findUnique({
+            where: {
+                id: parseInt(id),
+
+            }
+        })
+        console.log(file)
+        const fileLocation = `${__dirname}/../uploads/${file.savename}`;
+        res.download(fileLocation, file.name);
+    } catch (error) {
+        console.error("Error downloading file:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+}
+
 async function renameFile(req, res) {
     const {newname, fileId} = req.body
     try{
         await prisma.file.update({
             where: {
-                id: parseInt(fileId)
+                id: parseInt(fileId),
+
             },
             data: {
                 name: newname
@@ -105,7 +124,7 @@ async function deleteFile(req, res) {
     try {
         await prisma.file.delete({
             where: {
-                id: parseInt(fileId)
+                id: parseInt(fileId),
             }
         });
         res.status(200).json({ message: "File deleted successfully" });
@@ -120,6 +139,7 @@ module.exports = {
     getForm,
     uploadFile,
     renameFile,
-    deleteFile
+    deleteFile,
+    downloadFile
 
 }

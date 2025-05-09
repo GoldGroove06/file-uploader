@@ -46,8 +46,23 @@
             </ul>
         </div>
         <div >
+            <h1>Files</h1>
             <% files.forEach(function(file) { %>
-                <li><%= file.name %></li>
+                <li><%= file.name %>
+                <form id="renameform" action="/file/api/rename" method="POST">
+
+            <input type="text" id="newname" name="newname" required />
+            <input type="hidden" id="fileId" name="fileId" value="<%= file.id %>" />
+            <button type="submit">Rename file</button>
+            </form>
+            <form id="deleteform" action="/file/api/delete" method="POST">
+            
+           
+            <input type="hidden" id="fileId" name="fileId" value="<%= file.id %>" />
+            <button type="submit">Delete file</button>
+        </form>
+        <a href="/file/api/download/<%= file.id %>">Download</a>
+        </li>
             <% }); %>
         </div>
     </body>
