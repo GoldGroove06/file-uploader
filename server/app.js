@@ -8,6 +8,13 @@ const cookieParser = require('cookie-parser');
 const path = require("node:path");
 const folderRoute = require('./routes/folderRoute');
 const fileRoute = require('./routes/fileRoute');
+const cors = require('cors');
+
+app.use(cors({
+  origin: 'http://localhost:5173', 
+  credentials: true               
+}));
+
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");

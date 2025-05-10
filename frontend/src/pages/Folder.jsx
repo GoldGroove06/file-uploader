@@ -1,36 +1,56 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Separator from '@radui/ui/Separator';
 import Button from '@radui/ui/Button';
 import { Trash2, FolderPen, TextCursorInput, FileDown, File, Folder as OFolder, FolderClosed, FolderPlus, FileUp, Share2 } from 'lucide-react';
+import { useEffect } from 'react';
+
 
 function Folder() {
-    const sampleData = {
-        username: "john_doe",
-        folderName: "My Projects",
-        folderId: "abc123",
-        childFolders: [
-            { id: "f1", name: "Designs" },
-            { id: "f2", name: "Documents" },
-            { id: "f3", name: "2025 Archive" },
-        ],
-        files: [
-            { id: "file1", name: "resume.pdf" },
-            { id: "file2", name: "project.zip" },
-            { id: "file3", name: "logo.png" },
-        ],
-    };
+    const [Data, setData] = useState({});
+    const [loading, setLoading] = useState(true);
+    async function fetchFolders(id) {
+        if (id == "root") return
+        setLoading(true);
+        try {
+            const response = await fetch(`http://localhost:3000/folder/folder/${id}`, {
+                method: 'GET',
+                credentials: 'include',
+            });
+
+            const data = await response.json();
+            console.log(data.parentId);
+            console.log(data);
+            setData(data);
+            setLoading(false);
+        }
+
+        catch (error) {
+            console.log(error)
+        }
+
+    }
+    useEffect(() => {
+        fetchFolders(0)
+    }, [])
+
+
+
     return (
         <div className='min-h-screen'>
-            <div>{sampleData.username}</div>
-            
+            {loading ? (
+                <div>Loading...</div>
+            ) : (
+                <div>
+                    <div>{Data.username}</div>
 
-            {/* <h1>Folders Viewer</h1> */}
+
+                    {/* <h1>Folders Viewer</h1> */}
 
 
-            {/* <form action="/folder/api/create" method="POST">
+                    {/* <form action="/folder/api/create" method="POST">
                 <label htmlFor="foldername">Folder Name:</label>
                 <input type="text" id="foldername" name="foldername" required />
-                <input type="hidden" id="parentid" name="parentid" value={sampleData.folderId} />
+                <input type="hidden" id="parentid" name="parentid" value={Data.folderId} />
                 <button type="submit">Create Folder</button>
             </form>
 
@@ -42,26 +62,26 @@ function Folder() {
             >
                 <label htmlFor="filename">File Name:</label>
                 <input type="file" id="filename" name="filename" required />
-                <input type="hidden" id="parentid" name="parentid" value={sampleData.folderId} />
+                <input type="hidden" id="parentid" name="parentid" value={Data.folderId} />
                 <button type="submit">Upload File</button>
             </form> */}
 
 
-            <div className='mt-16 m-4'>
-                <div className='flex flex-row mb-4 justify-between'><div className='flex flex-row'><OFolder />...{sampleData.folderName}</div> <div><Button><FileUp /></Button> <Button> <FolderPlus /></Button></div></div>
-                <ul>
-                    {sampleData.childFolders.map((folder) => (
+                    <div className='mt-16 m-4'>
+                        <div className='flex flex-row mb-4 justify-between'><div className='flex flex-row' onClick={() => fetchFolders(Data.parentFolder)}><OFolder />...{Data.folderName}</div> <div><Button><FileUp /></Button> <Button> <FolderPlus /></Button></div></div>
+                        <ul>
+                            {Data.childfolders.map((folder) => (
 
-                        <li key={folder.id} className='flex flex-col justify-between'>
-                            <div className='flex justify-between'>
-                                <a href={`/folder/folder/${folder.id}`}>
-                                    <div className='flex flex-row'><FolderClosed />{folder.name}</div></a>
-                                <div>
-                                    <Button><FolderPen /></Button>
-                                    <Button><Trash2 /></Button>
-                                </div>
-                            </div>
-                            {/* 
+                                <li key={folder.id} className='flex flex-col justify-between'>
+                                    <div className='flex justify-between'>
+
+                                        <div className='flex flex-row' onClick={() => fetchFolders(folder.id)}><FolderClosed />{folder.name}</div>
+                                        <div>
+                                            <Button><FolderPen /></Button>
+                                            <Button><Trash2 /></Button>
+                                        </div>
+                                    </div>
+                                    {/* 
             <form action="/folder/api/delete" method="POST">
               <input type="hidden" name="folderId" value={folder.id} />
               <button type="submit">Delete Folder</button>
@@ -74,17 +94,17 @@ function Folder() {
               <button type="submit">Rename Folder</button>
             </form> */}
 
-                            <Separator />
-                        </li>
-                    ))}
-                </ul>
-                <ul>
-                    {sampleData.files.map((file) => (
-                        <li key={file.id} >
-                            <div className='flex justify-between'>
-                                <div className='flex flex-row '><File /> {file.name}</div>
+                                    <Separator />
+                                </li>
+                            ))}
+                        </ul>
+                        <ul>
+                            {Data.files.map((file) => (
+                                <li key={file.id} >
+                                    <div className='flex justify-between'>
+                                        <div className='flex flex-row '><File /> {file.name}</div>
 
-                                {/* 
+                                        {/* 
             <form action="/file/api/rename" method="POST">
               <input type="text" name="newname" required />
               <input type="hidden" name="fileId" value={file.id} />
@@ -96,19 +116,21 @@ function Folder() {
               <input type="hidden" name="fileId" value={file.id} />
               <button type="submit">Delete File</button>
             </form> */}
-                                <div>
-                                    <Button><Share2 /></Button>
-                                    <Button><FileDown /></Button>
-                                    <Button><TextCursorInput /></Button>
-                                    <Button><Trash2 /></Button>
-                                </div>
-                                {/* <a href={`/file/api/download/${file.id}`}>Download</a> */}
-                            </div>
-                            <Separator />
-                        </li>
-                    ))}
-                </ul>
-            </div>
+                                        <div>
+                                            <Button><Share2 /></Button>
+                                            <Button><FileDown /></Button>
+                                            <Button><TextCursorInput /></Button>
+                                            <Button><Trash2 /></Button>
+                                        </div>
+                                        {/* <a href={`/file/api/download/${file.id}`}>Download</a> */}
+                                    </div>
+                                    <Separator />
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

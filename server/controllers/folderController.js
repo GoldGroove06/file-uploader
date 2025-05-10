@@ -47,7 +47,7 @@ async function getFolder(req, res) {
     }
     console.log(data)
 
-    res.render("folders", {
+    res.status(200).json( {
         username: req.user.email,
         folderName: data.name,
         parentFolder: data.parentId == null ? "root" : data.parentId,

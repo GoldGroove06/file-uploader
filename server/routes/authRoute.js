@@ -11,6 +11,6 @@ authRoute.post("/signin", postSignin)
 
 
 authRoute.get("/signup", getSignup)
-authRoute.post("/create-user", emailCheck(), postSignup)
+authRoute.post("/signup", emailCheck(), postSignup)
 
 module.exports = authRoute

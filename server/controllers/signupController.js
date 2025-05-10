@@ -43,7 +43,7 @@ async function postSignup(req, res) {
           parentId: null
         }
       })
-      res.status(200).send("signup successful")
+      res.status(200).json({m:"signup successful"})
     }
 
     res.status(500).send("internal server error")
