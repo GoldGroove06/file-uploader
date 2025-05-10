@@ -5,8 +5,8 @@ const prisma = new PrismaClient();
 async function getFolder(req, res) {
     const id = req.params.id;
 
-    const user = req.session.passport.user;
-    console.log(req.session.passport.user)
+    const user = req.user.email;
+    console.log(req.user.email)
     let data;
     try {
         if (parseInt(id) == 0) {
@@ -48,7 +48,7 @@ async function getFolder(req, res) {
     console.log(data)
 
     res.render("folders", {
-        username: req.session.passport.user,
+        username: req.user.email,
         folderName: data.name,
         parentFolder: data.parentId == null ? "root" : data.parentId,
         childfolders: data.children,
@@ -65,7 +65,7 @@ async function createFolder(req, res) {
     if (!foldername || !parentid) {
         return res.status(400).json({ error: "Folder name and parent id are required" });
     }
-    const user = req.session.passport.user;
+    const user = req.user.email;
     let data
     try {
 

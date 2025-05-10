@@ -20,7 +20,7 @@ async function uploadFile(req, res) {
                 name: req.file.originalname,
                 savename: req.file.filename,
                 size: req.file.size,
-                userEmail: req.session.passport.user,
+                userEmail: req.user.email,
                 folderId: parseInt(parentid)
             }
         })
@@ -43,7 +43,7 @@ async function getFiles(req, res) {
     try{
         data = await prisma.file.findMany({
             where: {
-                userEmail: req.session.passport.user,
+                userEmail: req.user.email,
                 folderId: parseInt(folderid)
             }
         })
