@@ -1,57 +1,67 @@
 import React from 'react';
 import Separator from '@radui/ui/Separator';
+import Button from '@radui/ui/Button';
+import { Trash2, FolderPen, TextCursorInput, FileDown, File, Folder as OFolder, FolderClosed, FolderPlus, FileUp, Share2 } from 'lucide-react';
 
 function Folder() {
     const sampleData = {
-  username: "john_doe",
-  folderName: "My Projects",
-  folderId: "abc123",
-  childFolders: [
-    { id: "f1", name: "Designs" },
-    { id: "f2", name: "Documents" },
-    { id: "f3", name: "2025 Archive" },
-  ],
-  files: [
-    { id: "file1", name: "resume.pdf" },
-    { id: "file2", name: "project.zip" },
-    { id: "file3", name: "logo.png" },
-  ],
-};
+        username: "john_doe",
+        folderName: "My Projects",
+        folderId: "abc123",
+        childFolders: [
+            { id: "f1", name: "Designs" },
+            { id: "f2", name: "Documents" },
+            { id: "f3", name: "2025 Archive" },
+        ],
+        files: [
+            { id: "file1", name: "resume.pdf" },
+            { id: "file2", name: "project.zip" },
+            { id: "file3", name: "logo.png" },
+        ],
+    };
     return (
         <div className='min-h-screen'>
-      <div>{sampleData.username}</div>
-      <div>{sampleData.folderName}</div>
+            <div>{sampleData.username}</div>
+            
 
-      <h1>Folders Viewer</h1>
+            {/* <h1>Folders Viewer</h1> */}
 
-      {/* Create Folder Form */}
-      <form action="/folder/api/create" method="POST">
-        <label htmlFor="foldername">Folder Name:</label>
-        <input type="text" id="foldername" name="foldername" required />
-        <input type="hidden" id="parentid" name="parentid" value={sampleData.folderId} />
-        <button type="submit">Create Folder</button>
-      </form>
 
-      {/* Upload File Form */}
-      <form
-        action="/file/api/upload"
-        method="POST"
-        encType="multipart/form-data"
-      >
-        <label htmlFor="filename">File Name:</label>
-        <input type="file" id="filename" name="filename" required />
-        <input type="hidden" id="parentid" name="parentid" value={sampleData.folderId} />
-        <button type="submit">Upload File</button>
-      </form>
+            {/* <form action="/folder/api/create" method="POST">
+                <label htmlFor="foldername">Folder Name:</label>
+                <input type="text" id="foldername" name="foldername" required />
+                <input type="hidden" id="parentid" name="parentid" value={sampleData.folderId} />
+                <button type="submit">Create Folder</button>
+            </form>
 
-    
-      <div className='mt-16 m-4'>
-      <ul>
-        {sampleData.childFolders.map((folder) => (
-          <li key={folder.id} className='flex flex-col justify-between'>
-            <a href={`/folder/folder/${folder.id}`}>{folder.name}</a>
 
-            {/* 
+            <form
+                action="/file/api/upload"
+                method="POST"
+                encType="multipart/form-data"
+            >
+                <label htmlFor="filename">File Name:</label>
+                <input type="file" id="filename" name="filename" required />
+                <input type="hidden" id="parentid" name="parentid" value={sampleData.folderId} />
+                <button type="submit">Upload File</button>
+            </form> */}
+
+
+            <div className='mt-16 m-4'>
+                <div className='flex flex-row mb-4 justify-between'><div className='flex flex-row'><OFolder />...{sampleData.folderName}</div> <div><Button><FileUp /></Button> <Button> <FolderPlus /></Button></div></div>
+                <ul>
+                    {sampleData.childFolders.map((folder) => (
+
+                        <li key={folder.id} className='flex flex-col justify-between'>
+                            <div className='flex justify-between'>
+                                <a href={`/folder/folder/${folder.id}`}>
+                                    <div className='flex flex-row'><FolderClosed />{folder.name}</div></a>
+                                <div>
+                                    <Button><FolderPen /></Button>
+                                    <Button><Trash2 /></Button>
+                                </div>
+                            </div>
+                            {/* 
             <form action="/folder/api/delete" method="POST">
               <input type="hidden" name="folderId" value={folder.id} />
               <button type="submit">Delete Folder</button>
@@ -63,17 +73,18 @@ function Folder() {
               <input type="hidden" name="folderId" value={folder.id} />
               <button type="submit">Rename Folder</button>
             </form> */}
-            <Separator/>
-          </li>
-        ))}
-      </ul>
-      <ul>
-        {sampleData.files.map((file) => (
-          <li key={file.id} >
-            <div className='flex justify-between'>
-            {file.name}
 
-            {/* 
+                            <Separator />
+                        </li>
+                    ))}
+                </ul>
+                <ul>
+                    {sampleData.files.map((file) => (
+                        <li key={file.id} >
+                            <div className='flex justify-between'>
+                                <div className='flex flex-row '><File /> {file.name}</div>
+
+                                {/* 
             <form action="/file/api/rename" method="POST">
               <input type="text" name="newname" required />
               <input type="hidden" name="fileId" value={file.id} />
@@ -85,15 +96,20 @@ function Folder() {
               <input type="hidden" name="fileId" value={file.id} />
               <button type="submit">Delete File</button>
             </form> */}
-
-            <a href={`/file/api/download/${file.id}`}>Download</a>
+                                <div>
+                                    <Button><Share2 /></Button>
+                                    <Button><FileDown /></Button>
+                                    <Button><TextCursorInput /></Button>
+                                    <Button><Trash2 /></Button>
+                                </div>
+                                {/* <a href={`/file/api/download/${file.id}`}>Download</a> */}
+                            </div>
+                            <Separator />
+                        </li>
+                    ))}
+                </ul>
             </div>
-            <Separator/>
-          </li>
-        ))}
-      </ul>
-      </div>
-    </div>
+        </div>
     );
 }
 
