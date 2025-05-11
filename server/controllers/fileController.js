@@ -117,7 +117,9 @@ async function renameFile(req, res) {
 }
 
 async function deleteFile(req, res) {
+    console.log(req.body)
     const { fileId } = req.body;
+    console.log(fileId)
     if (!fileId) {
         return res.status(400).json({ error: "File ID is required" });
     }

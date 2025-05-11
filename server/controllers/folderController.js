@@ -6,7 +6,6 @@ async function getFolder(req, res) {
     const id = req.params.id;
 
     const user = req.user.email;
-    console.log(req.user.email)
     let data;
     try {
         if (parseInt(id) == 0) {
@@ -36,7 +35,6 @@ async function getFolder(req, res) {
                 }
             })
         }
-        console.log(data)
     }
     catch (error) {
         console.error("Error fetching folder:", error);
