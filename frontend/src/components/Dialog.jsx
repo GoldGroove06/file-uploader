@@ -32,15 +32,18 @@ const Content = ({ title, children }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white text-black rounded-lg p-6 shadow-xl w-full max-w-md">
-        <Heading as="h4">{title}</Heading>
-        <Separator />
-        <div>{children}</div>
-        <div className="mt-4 text-right">
+    <div className="fixed inset-0  bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
+      <div className="bg-[#1b1b2f]/80 rounded-lg overflow-hidden shadow-2xl w-full max-w-md transform transition-all">
+      
+        <div className=" p-4">
+          <Heading as="h4" className="text-white">{title}</Heading>
+        </div>
+        <Separator className="opacity-30" />
+        <div className="p-6">{children}</div>
+        <div className="px-6 pb-6 text-right">
           <Button
             onClick={close}
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            className="px-5 py-2 bg-gradient-primary text-white rounded-md hover:opacity-90 transition-opacity shadow-md"
           >
             Close
           </Button>

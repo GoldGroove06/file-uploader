@@ -1,4 +1,6 @@
 import React from 'react';
+import Button from '@radui/ui/Button';
+import Heading from '@radui/ui/Heading';
 
 function SignIn() {
     const [email, setEmail] = React.useState('');
@@ -16,20 +18,57 @@ function SignIn() {
             window.location.href = '/folder';
         };
     }
-//     await fetch('http://localhost:3000/auth/signin', {
-//   method: 'POST',
-//   credentials: 'include', // allow cookies
-//   headers: { 'Content-Type': 'application/json' },
-//   body: JSON.stringify({ email: 'user@example.com', password: 'password' }),
 
     return (
-        <div className='flex flex-col justify-center items-center h-screen'>
-            <form action={signIn} method="post" className='flex flex-col justify-center items-center'>
-                <span>Email: <input type="text" name="email" required value={email} onChange={(e) => setEmail(e.target.value)}/></span>
-                <span>Password: <input type="password" name="password" required value={password} onChange={(e) => setPassword(e.target.value)}/></span>
-                <span><input type="submit" value="Sign in" /></span>
-                <span>Dont have an account? <a href="/signup" className='underline'>Sign up</a></span>
-            </form>
+        <div className='flex justify-center items-center min-h-screen  py-12'>
+            <div className='bg-[#1b1b2f]/80 rounded-xl shadow-xl p-8 w-full max-w-md'>
+                <div className='text-center mb-6'>
+                    <Heading as="h2" className='text-gradient font-bold mb-2'>Welcome Back</Heading>
+                    <p className='text-gray-600'>Sign in to your account</p>
+                </div>
+                
+                <form onSubmit={(e) => { e.preventDefault(); signIn(); }} className='space-y-6'>
+                    <div className='space-y-2'>
+                        <label htmlFor="email" className='block text-sm font-medium text-gray-700'>Email</label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            required 
+                            value={email} 
+                            onChange={(e) => setEmail(e.target.value)}
+                            className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500'
+                            placeholder="Enter your email"
+                        />
+                    </div>
+                    
+                    <div className='space-y-2'>
+                        <label htmlFor="password" className='block text-sm font-medium text-gray-700'>Password</label>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            required 
+                            value={password} 
+                            onChange={(e) => setPassword(e.target.value)}
+                            className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500'
+                            placeholder="Enter your password"
+                        />
+                    </div>
+                    
+                    <Button 
+                        type="submit" 
+                        className='w-full bg-gradient-primary text-white py-2 rounded-md hover:opacity-90 transition-opacity'
+                    >
+                        Sign In
+                    </Button>
+                    
+                    <div className='text-center text-gray-600'>
+                        Don't have an account? 
+                        <a href="/signup" className='text-indigo-600 hover:text-indigo-800 ml-1 font-medium'>
+                            Sign up
+                        </a>
+                    </div>
+                </form>
+            </div>
         </div>
     );
 }

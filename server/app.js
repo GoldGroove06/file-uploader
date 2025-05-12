@@ -55,6 +55,9 @@ function authenticateToken(req, res, next) {
 
 app.use("/folder", authenticateToken, folderRoute);
 app.use("/file", authenticateToken, fileRoute);
+app.use("/auth-check", authenticateToken, (req, res) => {
+  res.status(200).json({ message: "Authenticated" });
+});
 
 
 app.listen(3000, () => {

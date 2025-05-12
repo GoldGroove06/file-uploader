@@ -8,6 +8,7 @@ import Folder from './pages/Folder.jsx';
 import SignIn from './pages/SignIn.jsx';
 import Signup from './pages/Signup.jsx';
 import ThemeProvider from './components/ThemeProvider.jsx';
+import AuthChecker from './components/AuthChecker.jsx';
 
 const router = createBrowserRouter([
   {
@@ -16,7 +17,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/folder",
-    element: <Folder />
+    element: (
+    <AuthChecker>
+      <Folder />
+    </AuthChecker>
+  )
   },
   {
     path: "signin",

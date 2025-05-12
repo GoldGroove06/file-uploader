@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from '@radui/ui/Button';
+import Heading from '@radui/ui/Heading';
 
 function Signup() {
     const [name, setName] = React.useState('');
@@ -17,16 +18,83 @@ function Signup() {
         const data = await response.json();
         console.log(data);
     }
+    
     return (
-        <div className='flex flex-col justify-center items-center h-screen'>
-            <form method="post" action={signUp} className='flex flex-col justify-center items-center'>
-                <span>Name: <input type="text" name="name" required value={name} onChange={(e) => setName(e.target.value)}/></span>
-                <span>Email: <input type="text" name="email" required value={ email} onChange={(e) => setEmail(e.target.value)}/></span>
-                <span>Password: <input type="password" name="password" required value={password} onChange={(e) => setPassword(e.target.value)}/></span>
-                <span>Confirm Password: <input type="password" name="confirmPassword" required value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}/></span>
-                <span><input type="submit" value="Sign up" /></span>
-                <span>Already have an account? <a href="/signin" className='underline'>Sign in</a></span>
-            </form>
+        <div className='flex justify-center items-center min-h-screen py-12'>
+            <div className='bg-[#1b1b2f]/80 rounded-xl shadow-xl p-8 w-full max-w-md'>
+                <div className='text-center mb-6'>
+                    <Heading as="h2" className='text-gradient font-bold mb-2'>Create Account</Heading>
+                    <p className='text-gray-600'>Sign up to get started</p>
+                </div>
+                
+                <form onSubmit={(e) => { e.preventDefault(); signUp(); }} className='space-y-4'>
+                    <div className='space-y-2'>
+                        <label htmlFor="name" className='block text-sm font-medium text-gray-700'>Name</label>
+                        <input 
+                            type="text" 
+                            id="name" 
+                            required 
+                            value={name} 
+                            onChange={(e) => setName(e.target.value)}
+                            className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500'
+                            placeholder="Enter your name"
+                        />
+                    </div>
+                    
+                    <div className='space-y-2'>
+                        <label htmlFor="email" className='block text-sm font-medium text-gray-700'>Email</label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            required 
+                            value={email} 
+                            onChange={(e) => setEmail(e.target.value)}
+                            className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500'
+                            placeholder="Enter your email"
+                        />
+                    </div>
+                    
+                    <div className='space-y-2'>
+                        <label htmlFor="password" className='block text-sm font-medium text-gray-700'>Password</label>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            required 
+                            value={password} 
+                            onChange={(e) => setPassword(e.target.value)}
+                            className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500'
+                            placeholder="Create a password"
+                        />
+                    </div>
+                    
+                    <div className='space-y-2'>
+                        <label htmlFor="confirmPassword" className='block text-sm font-medium text-gray-700'>Confirm Password</label>
+                        <input 
+                            type="password" 
+                            id="confirmPassword" 
+                            required 
+                            value={confirmPassword} 
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500'
+                            placeholder="Confirm your password"
+                        />
+                    </div>
+                    
+                    <Button 
+                        type="submit" 
+                        className='w-full bg-gradient-primary text-white py-2 rounded-md hover:opacity-90 transition-opacity mt-6'
+                    >
+                        Sign Up
+                    </Button>
+                    
+                    <div className='text-center text-gray-600 mt-4'>
+                        Already have an account? 
+                        <a href="/signin" className='text-indigo-600 hover:text-indigo-800 ml-1 font-medium'>
+                            Sign in
+                        </a>
+                    </div>
+                </form>
+            </div>
         </div>
     );
 }
