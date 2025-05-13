@@ -33,7 +33,7 @@ const Content = ({ title, children }) => {
 
   return (
     <div className="fixed inset-0  bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="bg-[#1b1b2f]/80 rounded-lg overflow-hidden shadow-2xl w-full max-w-md transform transition-all">
+      <div className="bg-[#1b1b2f]/80 rounded-lg  shadow-2xl w-full max-w-md transform transition-all">
       
         <div className=" p-4">
           <Heading as="h4" className="text-white">{title}</Heading>

@@ -4,6 +4,7 @@ import Button from '@radui/ui/Button';
 import { Trash2, FolderPen, TextCursorInput, FileDown, File, Folder as OFolder, FolderClosed, FolderPlus, FileUp, Share2 } from 'lucide-react';
 import Dialog from '../components/Dialog';
 import Callout from '@radui/ui/Callout';
+import Code from "@radui/ui/Code"
 
 
 function Folder() {
@@ -11,7 +12,8 @@ function Folder() {
     const [loading, setLoading] = useState(true);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [title, setTitle] = useState('');
-    const [dialogData, setDialogData] = useState('');
+    const [time, setTime] = useState('');
+    const [shareLink, setShareLink] = useState('');
     const [uploadFile, setUploadFile] = useState(null);
     const [calloutData, setCalloutData] = useState('');
     const [showCallout, setShowCallout] = useState(false);
@@ -162,6 +164,34 @@ function Folder() {
         })
     }
 
+    async function createShareHandler(id) {
+        try {
+            const response = await fetch(`http://localhost:3000/file/create/share`, {
+                method: 'POST',
+                credentials: 'include',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    id,
+                    expiry: time
+                }),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data);
+                setShareLink(data.shareLink);
+                showCalloutMessage("Link created successfully");
+                
+            } else {
+                const errorData = await response.json();
+                showCalloutMessage(`Upload failed: ${errorData.message || 'Unknown error'}`);
+            }
+        } catch (error) {
+            console.error(error);
+            showCalloutMessage('Upload failed: Network error');
+        }
+    }
+
 
 
     return (
@@ -180,17 +210,6 @@ function Folder() {
             ) : (
                 <div>
                     <div>{Data.username}</div>
-
-
-                    {/* <h1>Folders Viewer</h1> */}
-
-
-                    {/* <form action="/folder/api/create" method="POST">
-                <label htmlFor="foldername">Folder Name:</label>
-                <input type="text" id="foldername" name="foldername" required />
-                <input type="hidden" id="parentid" name="parentid" value={Data.folderId} />
-                <button type="submit">Create Folder</button>
-            </form> */}
 
 
                     <div className='mt-16 m-4 overflow-y-auto h-screen'>
@@ -303,8 +322,29 @@ function Folder() {
                                 <li key={file.id} >
                                     <div className='flex justify-between'>
                                         <div className='flex flex-row '><File /> {file.name}</div>
-                <div>
-                                            <Button><Share2 /></Button>
+                <div>   <Dialog>
+                                                <Dialog.Trigger>
+                                                    <Button><Share2 /></Button>
+                                                </Dialog.Trigger>
+
+                                                <Dialog.Content title="Create Share Link">
+                                                    <div>
+                                                        <input
+                                                            type="datetime-local"
+                                                            onChange={(e) => {
+                                                                setTime(e.target.value);
+                                                            }}
+                                                            value={time}
+                                                            required
+                                                        />
+                                                        <Button type="submit" onClick={() => createShareHandler(file.id)}>
+                                                            Create
+                                                        </Button>
+                                                        <Code>{shareLink}</Code>
+                                                    </div>
+                                                </Dialog.Content>
+                                            </Dialog>
+                                            
                                             <a href={`http://localhost:3000/file/api/download/${file.id}`}><Button><FileDown /></Button></a>
                                             <Dialog>
                                                 <Dialog.Trigger>

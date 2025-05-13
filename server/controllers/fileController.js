@@ -136,12 +136,42 @@ async function deleteFile(req, res) {
     }
 }
 
+async function createShareLink(req, res) {
+    const { id, expiry } = req.body;
+    console.log(id, expiry)
+    console.log(new Date(expiry))
+    try {
+        const file = await prisma.file.findUnique({
+            where: {
+                id: parseInt(id),
+            }
+        });
+        if (!file) {
+            return res.status(404).json({ error: "File not found" });
+        }
+        const shareName = `${file.savename}-${Date.now()}-${file.id}`;
+        const shareLinkPrisma = await prisma.fileShare.create({
+            data: {
+                fileId: file.folderId,
+                uniqueLink: shareName,
+                expiryDate : new Date(expiry),
+            }
+        })
+        const shareLink = `http://localhost:3000/share/${shareName}-${shareLinkPrisma.id}`;
+        res.status(200).json({ shareLink });
+    } catch (error) {
+        console.error("Error generating share link:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+}
+
 module.exports = {
     getFiles,
     getForm,
     uploadFile,
     renameFile,
     deleteFile,
-    downloadFile
+    downloadFile,
+    createShareLink
 
 }

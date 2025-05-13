@@ -9,6 +9,7 @@ const path = require("node:path");
 const folderRoute = require('./routes/folderRoute');
 const fileRoute = require('./routes/fileRoute');
 const cors = require('cors');
+const { shareDownload } = require('./controllers/shareController');
 
 app.use(cors({
   origin: 'http://localhost:5173', 
@@ -59,6 +60,8 @@ app.use("/auth-check", authenticateToken, (req, res) => {
   res.status(200).json({ message: "Authenticated" });
 });
 
+
+app.get("/share/:uid", shareDownload)
 
 app.listen(3000, () => {
   console.log("Server is running on port 3000");

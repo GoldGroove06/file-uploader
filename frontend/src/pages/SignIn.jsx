@@ -14,6 +14,7 @@ function SignIn() {
             body: JSON.stringify({ email: email, password: password }),
         });
         const data = await response.json();
+        console.log(data)
         if(data.message=="Logged in"){
             window.location.href = '/folder';
         };

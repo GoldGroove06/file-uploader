@@ -56,6 +56,17 @@ model File {
   // Relate by user email
   userEmail String
   user      User     @relation("UserFilesByEmail", fields: [userEmail], references: [email])
+
+  FileShare FileShare[]
 }
 
+model FileShare {
+  id        Int      @id @default(autoincrement())
+  uniqueLink String
+  date      DateTime @default(now())
+  expiryDate DateTime
 
+  fileId    Int
+  file      File    @relation(fields: [fileId], references: [id])
+
+}
