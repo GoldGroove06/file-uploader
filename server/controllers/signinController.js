@@ -1,7 +1,7 @@
-const jwt = require('jsonwebtoken');
+import { sign } from 'jsonwebtoken';
 const secret = 'a santa at nasa';
-const bcrypt = require('bcrypt');
-const { PrismaClient } = require('@prisma/client');
+import { compare } from 'bcrypt';
+import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function getSignin(req, res) {
@@ -21,9 +21,9 @@ async function postSignin(req, res) {
             }
         });
         if (!user[0]) res.status(400).json({ message: "No user found" });
-        const isMatch = await bcrypt.compare(password, user[0].password);
+        const isMatch = await compare(password, user[0].password);
         if (!isMatch) res.status(400).json({ message: "Incorrect password" });
-        const token = jwt.sign({ id: user[0].id, email: user[0].email }, secret, {
+        const token = sign({ id: user[0].id, email: user[0].email }, secret, {
             expiresIn: '1h'
         });
 
@@ -42,4 +42,4 @@ async function postSignin(req, res) {
     }
 }
 
-module.exports = { getSignin, postSignin }
+export default { getSignin, postSignin }

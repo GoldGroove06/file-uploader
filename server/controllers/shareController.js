@@ -1,5 +1,5 @@
 const { PrismaClient } = require('@prisma/client');
-const { downloadFile } = require('./fileController');
+const { downloadFile } = require('./fileController').default;
 const prisma = new PrismaClient();
 
 async function shareDownload(req, res){

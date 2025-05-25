@@ -1,4 +1,4 @@
-const { PrismaClient } = require('@prisma/client');
+import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 
@@ -131,7 +131,7 @@ async function folderCreate(req, res) {
     res.render("newform")
 }
 
-module.exports = {
+export default {
     getFolder,
     createFolder,
     folderCreate,

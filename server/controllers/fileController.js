@@ -1,4 +1,4 @@
-const { PrismaClient } = require('@prisma/client');
+import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 
@@ -165,7 +165,7 @@ async function createShareLink(req, res) {
     }
 }
 
-module.exports = {
+export default {
     getFiles,
     getForm,
     uploadFile,

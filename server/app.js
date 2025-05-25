@@ -1,15 +1,15 @@
-const express = require('express')
-const bodyParser = require('body-parser');
+import express from 'express';
+import { json, urlencoded } from 'body-parser';
 const app = express()
-const authRoute = require("./routes/authRoute")
-const jwt = require('jsonwebtoken');
-const cookieParser = require('cookie-parser');
+import authRoute from "./routes/authRoute";
+import { verify } from 'jsonwebtoken';
+import cookieParser from 'cookie-parser';
 
-const path = require("node:path");
-const folderRoute = require('./routes/folderRoute');
-const fileRoute = require('./routes/fileRoute');
-const cors = require('cors');
-const { shareDownload } = require('./controllers/shareController');
+import { join } from "node:path";
+import folderRoute from './routes/folderRoute';
+import fileRoute from './routes/fileRoute';
+import cors from 'cors';
+import { shareDownload } from './controllers/shareController';
 
 app.use(cors({
   origin: 'http://localhost:5173', 
@@ -17,10 +17,10 @@ app.use(cors({
 }));
 
 
-app.set("views", path.join(__dirname, "views"));
+app.set("views", join(__dirname, "views"));
 app.set("view engine", "ejs");
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(json());
+app.use(urlencoded({ extended: true }));
 
 const secret = 'a santa at nasa';
 
@@ -45,7 +45,7 @@ function authenticateToken(req, res, next) {
   if (!token) return res.sendStatus(401);
 
   try {
-    const decoded = jwt.verify(token, secret);
+    const decoded = verify(token, secret);
     req.user = decoded; 
     next();
   } catch (err) {

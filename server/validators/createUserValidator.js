@@ -1,5 +1,5 @@
-const { body, param } = require("express-validator");
-const { PrismaClient } = require('@prisma/client');
+import { body, param } from "express-validator";
+import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 
@@ -21,4 +21,4 @@ const emailCheck = () => {
 }
 
 
-module.exports = {emailCheck}
+export default {emailCheck}

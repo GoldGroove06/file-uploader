@@ -1,9 +1,9 @@
-const { Router } = require("express")
+import { Router } from "express"
 const fileRoute = Router()
-const multer  = require('multer')
+import multer from 'multer'
 const upload = multer({ dest: 'uploads/' })
 
-const {getFiles, getForm, uploadFile, renameFile, deleteFile, downloadFile, createShareLink} = require("../controllers/fileController")
+import { getFiles, getForm, uploadFile, renameFile, deleteFile, downloadFile, createShareLink } from "../controllers/fileController"
 
 fileRoute.get("/fetchfiles/:folderid", getFiles)
 fileRoute.post("/api/upload", upload.single('filename'), uploadFile)
@@ -14,4 +14,4 @@ fileRoute.get("/api/download/:id", downloadFile)
 
 fileRoute.post("/create/share", createShareLink)
 
-module.exports = fileRoute;
+export default fileRoute;
